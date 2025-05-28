@@ -36,7 +36,7 @@ public class RunnerTest {
       if (m.isAnnotationPresent(Test.class)) tests.add(m);
     }
 
-    // Сортировка тестов по приоритету (1 → 10)
+    // Сортировка тестов по приоритету (10 → 1)
     tests.sort((m1, m2) -> {
       int p1 = m1.getAnnotation(Test.class).priority();
       int p2 = m2.getAnnotation(Test.class).priority();
@@ -75,7 +75,7 @@ public class RunnerTest {
       // Вызов теста, с поддержкой CsvSource
       try {
         testMethod.setAccessible(true);
-        if ((testMethod.getAnnotation(CsvSource.class) != null) && testMethod.isAnnotationPresent(CsvSource.class)) {
+        if (testMethod.isAnnotationPresent(CsvSource.class)) {
           String csv = testMethod.getAnnotation(CsvSource.class).value();
           Object[] args = parseCsvArguments(csv, testMethod.getParameterTypes());
           testMethod.invoke(testInstance, args);
