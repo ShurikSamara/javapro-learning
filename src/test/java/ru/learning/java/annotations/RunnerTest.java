@@ -119,7 +119,6 @@ public class RunnerTest {
    * Преобразует csv-строку в массив аргументов нужных типов для передачи в метод.
    */
   private static Object[] parseCsvArguments(String csvRow, Class<?>[] paramTypes) {
-    // Регулярное выражение для обработки заключённых в кавычки значений с запятыми
     String[] strParts = csvRow.split(",");
     if (strParts.length != paramTypes.length)
       throw new RuntimeException("CsvSource аргументов (" + strParts.length + ") не совпадает с количеством параметров метода (" + paramTypes.length + ")");
