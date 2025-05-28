@@ -8,5 +8,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Test {
-  int priority() default 5; // Приоритет может изменяться в значениях от 1 (высший) до 10 (низший)
+  int priority() default 5;
 }
