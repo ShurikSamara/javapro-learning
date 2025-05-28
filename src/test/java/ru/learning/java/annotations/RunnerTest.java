@@ -1,7 +1,5 @@
 package ru.learning.java.annotations;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -14,7 +12,7 @@ public class RunnerTest {
     runTests(AnnotationTest.class);
   }
 
-  public static void runTests(@NotNull Class<?> testClass) {
+  public static void runTests(Class<?> testClass) {
     Method beforeSuite = null;
     Method afterSuite = null;
     List<Method> beforeTest = new ArrayList<>();
