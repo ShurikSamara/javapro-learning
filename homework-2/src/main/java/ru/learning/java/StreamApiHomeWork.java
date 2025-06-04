@@ -114,6 +114,7 @@ public class StreamApiHomeWork {
     System.out.println("Исходная строка: \"" + text + "\"");
 
     Map<String, Long> wordCount = Arrays.stream(text.split(" "))
+      .filter(word -> !word.isBlank())
       .collect(Collectors.groupingBy(word -> word, Collectors.counting()));
 
     System.out.println("Подсчет слов: " + wordCount);
