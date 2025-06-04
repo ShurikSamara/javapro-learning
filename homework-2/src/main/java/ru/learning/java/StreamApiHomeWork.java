@@ -11,15 +11,6 @@ import java.util.stream.Collectors;
 
 public class StreamApiHomeWork {
 
-  // Класс для представления сотрудника
-    record Employee(String name, int age, String position) {
-
-    @Override
-      public String toString() {
-        return String.format("%s (%d лет, %s)", name, age, position);
-      }
-    }
-
   public static void main(String[] args) {
     System.out.println("=== Решения задач со Stream API ===\n");
 
@@ -77,16 +68,7 @@ public class StreamApiHomeWork {
   // Задача 3: Имена 3 самых старших инженеров
   private static void task3() {
     System.out.println("3. Имена 3 самых старших инженеров:");
-    List<Employee> employees = Arrays.asList(
-      new Employee("Иван", 35, "Инженер"),
-      new Employee("Петр", 28, "Менеджер"),
-      new Employee("Анна", 42, "Инженер"),
-      new Employee("Мария", 31, "Инженер"),
-      new Employee("Сергей", 45, "Инженер"),
-      new Employee("Елена", 29, "Дизайнер"),
-      new Employee("Алексей", 38, "Инженер"),
-      new Employee("Владимир", 73, "Инженер")
-    );
+    List<Employee> employees = getListEmployees();
 
     List<String> oldestEngineers = employees.stream()
       .filter(emp -> "Инженер".equals(emp.position()))
@@ -102,16 +84,7 @@ public class StreamApiHomeWork {
   // Задача 4: Средний возраст инженеров
   private static void task4() {
     System.out.println("4. Средний возраст инженеров:");
-    List<Employee> employees = Arrays.asList(
-      new Employee("Иван", 35, "Инженер"),
-      new Employee("Петр", 28, "Менеджер"),
-      new Employee("Анна", 42, "Инженер"),
-      new Employee("Мария", 31, "Инженер"),
-      new Employee("Сергей", 45, "Инженер"),
-      new Employee("Елена", 29, "Дизайнер"),
-      new Employee("Алексей", 38, "Инженер"),
-      new Employee("Владимир", 73, "Инженер")
-    );
+    List<Employee> employees = getListEmployees();
 
     OptionalDouble averageAge = employees.stream()
       .filter(emp -> "Инженер".equals(emp.position()))
@@ -182,5 +155,27 @@ public class StreamApiHomeWork {
 
     System.out.println("Самое длинное слово: " + longestWord.orElse(""));
     System.out.println();
+  }
+
+  private static List<Employee> getListEmployees() {
+    return Arrays.asList(
+      new Employee("Иван", 35, "Инженер"),
+      new Employee("Петр", 28, "Менеджер"),
+      new Employee("Анна", 42, "Инженер"),
+      new Employee("Мария", 31, "Инженер"),
+      new Employee("Сергей", 45, "Инженер"),
+      new Employee("Елена", 29, "Дизайнер"),
+      new Employee("Алексей", 38, "Инженер"),
+      new Employee("Владимир", 73, "Инженер")
+    );
+  }
+
+  // Класс для представления сотрудника
+  record Employee(String name, int age, String position) {
+
+    @Override
+    public String toString() {
+      return String.format("%s (%d лет, %s)", name, age, position);
+    }
   }
 }
