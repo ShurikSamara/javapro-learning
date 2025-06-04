@@ -1,5 +1,6 @@
 target/
 .PVS-Studio
+.mvn/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
