@@ -139,11 +139,10 @@ public class StreamApiHomeWork {
   private static void task8() {
     System.out.println("8. Самое длинное слово в массиве строк:");
     String[] sentences = {
-      "Collections and streams, while bearing some superficial similarities, have different goals. ",
-      "Collections are primarily concerned with the efficient management of, and access to, their elements. ",
-      "By contrast, streams do not provide a means to directly access or manipulate their elements, ",
-      "and are instead concerned with declaratively describing their source ",
-      "and the computational operations which will be performed in aggregate on that source. "
+      "java stream api programming language",
+      "collection framework provides many utilities",
+      "functional programming paradigm is powerful",
+      "lambda expressions simplify code significantly"
     };
 
     System.out.println("Массив строк:");
