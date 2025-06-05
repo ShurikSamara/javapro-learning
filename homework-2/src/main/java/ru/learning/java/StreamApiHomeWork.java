@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
 public class StreamApiHomeWork {
@@ -49,7 +48,7 @@ public class StreamApiHomeWork {
 
     Optional<Integer> thirdLargest = numbers.stream().sorted(Collections.reverseOrder()).skip(2).findFirst();
 
-    System.out.println("3-е наибольшее число: " + thirdLargest.orElse(null));
+    System.out.println("3-е наибольшее число: " + thirdLargest.orElse(-1));
     System.out.println();
   }
 
@@ -61,7 +60,7 @@ public class StreamApiHomeWork {
 
     Optional<Integer> thirdLargestUnique = numbers.stream().distinct().sorted(Collections.reverseOrder()).skip(2).findFirst();
 
-    System.out.println("3-е наибольшее уникальное число: " + thirdLargestUnique.orElse(null));
+    System.out.println("3-е наибольшее уникальное число: " + thirdLargestUnique.orElse(-1));
     System.out.println();
   }
 
@@ -86,12 +85,13 @@ public class StreamApiHomeWork {
     System.out.println("4. Средний возраст инженеров:");
     List<Employee> employees = getListEmployees();
 
-    OptionalDouble averageAge = employees.stream()
+    double averageAge = employees.stream()
       .filter(emp -> "Инженер".equals(emp.position()))
       .mapToInt(Employee::age)
-      .average();
+      .average()
+      .orElse(0.0);
 
-    System.out.println("Средний возраст инженеров: " + (averageAge.isPresent() ? String.format("%.1f", averageAge.getAsDouble()) : "N/A"));
+    System.out.println("Средний возраст инженеров: " + String.format("%.1f", averageAge));
     System.out.println();
   }
 
