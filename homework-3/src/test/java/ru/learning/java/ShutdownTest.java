@@ -74,6 +74,15 @@ public class ShutdownTest {
     monitorThread.start();
     pool.awaitTermination();
     monitorThread.interrupt(); // Останавливаем мониторинг
+    try {
+      monitorThread.join(1000); // Ждём максимум 1 секунду
+      if (monitorThread.isAlive()) {
+        System.out.println("  [Предупреждение] Поток мониторинга не завершился за 1 секунду");
+      }
+    } catch (InterruptedException e) {
+      System.out.println("❌ [Ошибка] Прервано ожидание завершения потока мониторинга");
+      Thread.currentThread().interrupt();
+    }
 
     System.out.println();
     System.out.println("Финальное состояние:");

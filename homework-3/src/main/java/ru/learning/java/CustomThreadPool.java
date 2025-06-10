@@ -5,8 +5,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class CustomThreadPool {
   private final LinkedList<Runnable> taskQueue;
+  private final Thread[] workers;
   private volatile boolean isShutdown = false;
   private final AtomicInteger activeThreads;
+  private final Object shutdownLock = new Object();
   private final Object terminationLock = new Object();
 
   public CustomThreadPool(int poolSize) {
@@ -15,7 +17,7 @@ public class CustomThreadPool {
     }
 
     this.taskQueue = new LinkedList<>();
-    Thread[] workers = new Thread[poolSize];
+    this.workers = new Thread[poolSize];
     this.activeThreads = new AtomicInteger(poolSize);
 
     // Создание и запуск рабочих потоков
@@ -30,12 +32,14 @@ public class CustomThreadPool {
       throw new NullPointerException("Задача не может быть null");
     }
 
-    synchronized (taskQueue) {
+    synchronized (shutdownLock) {
       if (isShutdown) {
         throw new IllegalStateException("ThreadPool завершает работу, новые задачи не принимаются");
       }
-      taskQueue.addLast(task);
-      taskQueue.notify(); // Пробуждаем один ожидающий поток
+      synchronized (taskQueue) {
+        taskQueue.addLast(task);
+        taskQueue.notify(); // Пробуждаем один ожидающий поток
+      }
     }
   }
 
@@ -48,6 +52,7 @@ public class CustomThreadPool {
       taskQueue.notifyAll(); // Пробуждаем все ожидающие потоки
     }
   }
+
 
   public void awaitTermination() throws InterruptedException {
     synchronized (terminationLock) {
@@ -70,7 +75,6 @@ public class CustomThreadPool {
   public boolean isShutdown() {
     return isShutdown;
   }
-
 
   /**
    * Возвращает количество активных потоков
@@ -100,7 +104,7 @@ public class CustomThreadPool {
 
     public Worker(int workerId) {
       super("CustomThreadPool-Worker-" + workerId);
-      setDaemon(false); //Явно определяем, что это не демон-поток
+      setDaemon(false); // Явно определяем, что это не демон-поток
     }
 
     @Override
