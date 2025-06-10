@@ -66,7 +66,9 @@ public class CustomThreadPool {
    * Проверяет, завершён ли пул потоков
    */
   public boolean isTerminated() {
-    return isShutdown && activeThreads.get() == 0;
+    synchronized (taskQueue) {
+      return isShutdown && activeThreads.get() == 0;
+    }
   }
 
   /**
