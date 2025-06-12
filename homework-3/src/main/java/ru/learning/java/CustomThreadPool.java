@@ -1,12 +1,13 @@
 package ru.learning.java;
 
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CustomThreadPool {
   private final LinkedList<Runnable> taskQueue;
   private final Thread[] workers;
-  private volatile boolean isShutdown = false;
+  private final AtomicBoolean isShutdown = new AtomicBoolean(false);
   private final AtomicInteger activeThreads;
   private final Object shutdownLock = new Object();
   private final Object terminationLock = new Object();
@@ -33,7 +34,7 @@ public class CustomThreadPool {
     }
 
     synchronized (shutdownLock) {
-      if (isShutdown) {
+      if (isShutdown.get()) {
         throw new IllegalStateException("ThreadPool завершает работу, новые задачи не принимаются");
       }
       synchronized (taskQueue) {
@@ -45,10 +46,10 @@ public class CustomThreadPool {
 
   public void shutdown() {
     synchronized (taskQueue) {
-      if (isShutdown) {
+      if (isShutdown.get()) {
         return; // Уже завершается
       }
-      isShutdown = true;
+      isShutdown.set(true);
       taskQueue.notifyAll(); // Пробуждаем все ожидающие потоки
     }
   }
@@ -67,7 +68,7 @@ public class CustomThreadPool {
    */
   public boolean isTerminated() {
     synchronized (taskQueue) {
-      return isShutdown && activeThreads.get() == 0;
+      return isShutdown.get() && activeThreads.get() == 0;
     }
   }
 
@@ -75,7 +76,7 @@ public class CustomThreadPool {
    * Проверяет, начат ли процесс завершения
    */
   public boolean isShutdown() {
-    return isShutdown;
+    return isShutdown.get();
   }
 
   /**
@@ -133,7 +134,7 @@ public class CustomThreadPool {
 
     private Runnable getNextTask() {
       synchronized (taskQueue) {
-        while (taskQueue.isEmpty() && !isShutdown) {
+        while (taskQueue.isEmpty() && !isShutdown.get()) {
           try {
             taskQueue.wait();
           } catch (InterruptedException e) {
