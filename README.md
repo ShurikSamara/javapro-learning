@@ -1,6 +1,6 @@
 # Проект с домашними заданиями по курсу Java Pro
 
-<div style="text-align: center;">
+<div align="center">
   <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MDAwMXNldW9saDZlM3gydjYxbjFndWhzNmtyNGtjOHg3cnpxeWkwbCZlcD12MV9zdGlja2Vyc19yZWxhdGVkJmN0PXM/jdPMeyv9rn0hZHh8n9/giphy.gif" width="100" alt=""/>
 </div>
 
