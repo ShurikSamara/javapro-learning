@@ -1,5 +1,7 @@
 package ru.learning.java;
 
+import java.util.concurrent.TimeUnit;
+
 public class ShutdownTest {
   public static void main(String[] args) throws InterruptedException {
     CustomThreadPool pool = new CustomThreadPool(2);
@@ -19,7 +21,7 @@ public class ShutdownTest {
       final int taskId = i;
       pool.execute(() -> {
         try {
-          Thread.sleep(3000);
+          TimeUnit.SECONDS.sleep(3);
           System.out.println("Длительная задача " + taskId + " выполнена");
         } catch (InterruptedException e) {
           System.out.println("Длительная задача " + taskId + " прервана");
@@ -35,7 +37,7 @@ public class ShutdownTest {
     System.out.println();
 
     // Даём время задачам начать выполнение
-    Thread.sleep(500);
+    TimeUnit.SECONDS.sleep(1);
 
     System.out.println("Вызываем shutdown()...");
     pool.shutdown();
@@ -59,8 +61,8 @@ public class ShutdownTest {
     //Мониторинг состояния во время завершения
     Thread monitorThread = new Thread(() -> {
       try {
-        while (!pool.isTerminated()) {
-          Thread.sleep(1000);
+        while (!pool.isTerminated() && !Thread.currentThread().isInterrupted()) {
+          TimeUnit.SECONDS.sleep(1);
           System.out.println("  [Мониторинг] isShutdown: " + pool.isShutdown() +
             ", isTerminated: " + pool.isTerminated() +
             ", активных потоков: " + pool.getActiveThreadCount() +
@@ -68,6 +70,7 @@ public class ShutdownTest {
         }
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
+        System.out.println("  [Мониторинг] Поток мониторинга прерван");
       }
     });
 
