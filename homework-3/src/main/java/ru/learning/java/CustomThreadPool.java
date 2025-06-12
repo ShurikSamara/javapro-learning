@@ -34,7 +34,7 @@ public class CustomThreadPool {
     }
 
     synchronized (shutdownLock) {
-      if (isShutdown.get()) {
+      if (isShutdown()) {
         throw new IllegalStateException("ThreadPool завершает работу, новые задачи не принимаются");
       }
       synchronized (taskQueue) {
@@ -45,12 +45,14 @@ public class CustomThreadPool {
   }
 
   public void shutdown() {
-    synchronized (taskQueue) {
-      if (isShutdown.get()) {
+    synchronized (shutdownLock) {
+      if (isShutdown()) {
         return; // Уже завершается
       }
       isShutdown.set(true);
-      taskQueue.notifyAll(); // Пробуждаем все ожидающие потоки
+      synchronized (taskQueue) {
+        taskQueue.notifyAll(); // Пробуждаем все ожидающие потоки
+      }
     }
   }
 
@@ -64,19 +66,17 @@ public class CustomThreadPool {
   }
 
   /**
-   * Проверяет, завершён ли пул потоков
-   */
-  public boolean isTerminated() {
-    synchronized (taskQueue) {
-      return isShutdown.get() && activeThreads.get() == 0;
-    }
-  }
-
-  /**
    * Проверяет, начат ли процесс завершения
    */
   public boolean isShutdown() {
     return isShutdown.get();
+  }
+
+  /**
+   * Проверяет, завершён ли пул потоков
+   */
+  public boolean isTerminated() {
+    return isShutdown() && activeThreads.get() == 0;
   }
 
   /**
@@ -134,7 +134,7 @@ public class CustomThreadPool {
 
     private Runnable getNextTask() {
       synchronized (taskQueue) {
-        while (taskQueue.isEmpty() && !isShutdown.get()) {
+        while (taskQueue.isEmpty() && !isShutdown()) {
           try {
             taskQueue.wait();
           } catch (InterruptedException e) {
