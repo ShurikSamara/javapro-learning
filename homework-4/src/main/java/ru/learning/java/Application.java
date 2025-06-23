@@ -17,11 +17,9 @@ public class Application {
   public static void main(String[] args) {
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class);
 
-    UserService userService = context.getBean(UserService.class);
-
-    System.out.println("=== Демонстрация работы с пользователями ===\n");
-
-    try {
+    try (context) {
+      UserService userService = context.getBean(UserService.class);
+      System.out.println("=== Демонстрация работы с пользователями ===\n");
       // 1. Создание пользователей
       System.out.println("1. Создание пользователей:");
       User user1 = userService.createUser("john_doe");
@@ -75,8 +73,6 @@ public class Application {
 
     } catch (Exception e) {
       logger.error("Ошибка при работе с пользователями: {}", e.getMessage(), e);
-    } finally {
-      context.close();
     }
 
 
