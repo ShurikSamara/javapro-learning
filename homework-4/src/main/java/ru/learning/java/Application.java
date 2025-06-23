@@ -75,10 +75,6 @@ public class Application {
       logger.error("Ошибка при работе с пользователями: {}", e.getMessage(), e);
     }
 
-
-    // Закрытие контекста
-    context.close();
-
     System.out.println("=== Завершение демонстрация работы с пользователями ===\n");
   }
 }
