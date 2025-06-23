@@ -47,16 +47,17 @@ public class UserDao {
          PreparedStatement statement = connection.prepareStatement(sql)) {
 
       statement.setLong(1, id);
-      ResultSet resultSet = statement.executeQuery();
 
-      if (resultSet.next()) {
-        User user = new User(
-          resultSet.getLong("id"),
-          resultSet.getString("username")
-        );
-        return Optional.of(user);
+      try(ResultSet resultSet = statement.executeQuery()) {
+        if (resultSet.next()) {
+          User user = new User(
+            resultSet.getLong("id"),
+            resultSet.getString("username")
+          );
+          return Optional.of(user);
+        }
+        return Optional.empty();
       }
-      return Optional.empty();
     } catch (SQLException e) {
       throw new RuntimeException("Ошибка при поиске пользователя", e);
     }
