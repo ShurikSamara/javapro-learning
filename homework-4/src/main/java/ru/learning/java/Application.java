@@ -1,5 +1,7 @@
 package ru.learning.java;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import ru.learning.java.model.User;
@@ -10,6 +12,8 @@ import java.util.Optional;
 
 @ComponentScan
 public class Application {
+  private static final Logger logger = LoggerFactory.getLogger(Application.class);
+
   public static void main(String[] args) {
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class);
 
@@ -70,9 +74,11 @@ public class Application {
       allUsers.forEach(System.out::println);
 
     } catch (Exception e) {
-      System.err.println("Ошибка: " + e.getMessage());
-      e.printStackTrace();
+      logger.error("Ошибка при работе с пользователями: {}", e.getMessage(), e);
+    } finally {
+      context.close();
     }
+
 
     // Закрытие контекста
     context.close();
