@@ -25,4 +25,7 @@
 - [💾Домашняя работа №2 Stream API](./homework-2)
 - [💾Домашняя работа №3 CustomThreadPool](./homework-3)
 - [💾Домашняя работа №4 Spring Context](./homework-4)
-- [🔧Домашняя работа №5 (в разработке до 24.06.25)](./homework-5)
+- [💾Домашняя работа №5 Spring Data JPA](./homework-5)
+- [💾Домашняя работа №6 Spring Web](./homework-6)
+- [💾Домашняя работа №7 Spring Web (часть 2) Интеграция сервисов](./homework-7)
+- [💾Домашняя работа №8 Spring Web (часть 3) Сервис установки пользовательских лимитов](./homework-8)

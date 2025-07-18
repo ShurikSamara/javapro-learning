@@ -1,0 +1,53 @@
+server:
+  servlet:
+    context-path: /api/v1
+  port: 8083
+
+# Limits service configuration
+limits-service:
+  default-limit: 10000.00
+  reset-cron: "0 0 0 * * *"  # Every day at midnight
+
+spring:
+  # Database configuration
+  datasource:
+    username: limits_user
+    password: limits_pass
+    url: jdbc:postgresql://localhost:5432/limits_db
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
+      connection-test-query: SELECT 1
+
+  # Flyway migration configuration
+  flyway:
+    enabled: true
+    locations: classpath:migration
+    baseline-on-migrate: true
+    validate-on-migrate: true
+    clean-disabled: false
+
+  # JPA configuration
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        format_sql: true
+
+# Logging configuration
+logging:
+  level:
+    org:
+      springframework: INFO
+    ru:
+      learning:
+        java:
+          spring: DEBUG
