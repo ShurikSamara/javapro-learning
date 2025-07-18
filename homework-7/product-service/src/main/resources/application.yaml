@@ -1,0 +1,39 @@
+server:
+  servlet:
+    context-path: /api/v1
+  port: 8081
+
+spring:
+  datasource:
+    username: product_user
+    password: product_pass
+    url: jdbc:postgresql://product-db:5432/product_db
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
+      connection-test-query: SELECT 1
+  flyway:
+    enabled: true
+    locations: classpath:migration
+    baseline-on-migrate: true
+    validate-on-migrate: true
+    clean-disabled: false
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    org:
+      springframework: INFO
+    ru:
+      learning:
+        java:
+          spring: DEBUG
